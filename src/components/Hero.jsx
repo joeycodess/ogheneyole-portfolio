@@ -1,55 +1,25 @@
-import { HERO_CONTENT } from "../constants";
-import profilePic from "../assets/my-profile.png";
-import { motion } from "framer-motion";
+import { FiArrowDown, FiDownload, FiMapPin } from "react-icons/fi";
 
-const container = (delay) => ({
-  hidden: { x: -100, opacity: 0 },
-  visible: { 
-    x: 0, 
-    opacity: 1, 
-    transition: {duration: 0.5, delay: delay },
-  },
-});
+import HeroWorkbench from "./HeroWorkbench";
 
-const Hero = () => {
+export default function Hero() {
   return (
-    <div className="border-b border-neutral-900 pb-4 lg:mb-35">
-      <div className="flex flex-wrap">
-        <div className="w-full lg:w-1/2">
-          <div className="flex flex-col items-center lg:items-start">
-            <motion.h1 
-              variants={container(0)}
-              initial="hidden"
-              animate="visible"
-              className="pb-16 text-6xl font-thin tracking-tight lg:mt-16 lg:text-8xl">Ogheneyole
-            </motion.h1>
-            <motion.span 
-              variants={container(0.5)}
-              initial="hidden"
-              animate="visible"
-              className="bg-gradient-to-r from-pink-300 via-slate-500 to-purple-500 bg-clip-text text-3xl tracking-tight text-transparent">Full Stack Developer
-            </motion.span>
-            <motion.p 
-              variants={container(1)}
-              initial="hidden"
-              animate="visible"
-              className="my-2 max-w-xl py-6 font-light tracking-tighter">{HERO_CONTENT}
-            </motion.p>
-          </div>
-        </div>
-        <div className="w-full lg:w-1/2 lg:p-8">
-          <div className="flex justify-center">
-            <motion.img
-              initial={{ x: 100, opacity: 0 }}
-              animate={{ x:0, opacity: 1 }}
-              transition={{ duration: 1, delay: 1.2 }}
-              src={profilePic} alt="Ogheneyole" 
-            />
+    <section className="product-intro" aria-labelledby="hero-title">
+      <div className="intro-copy">
+        <p className="intro-identity">
+          <img src="/portrait-96.webp" width="44" height="44" alt="" />
+          Ogheneyole Gold <span className="intro-location"><FiMapPin aria-hidden="true" /> Nigeria</span>
+        </p>
+        <h1 id="hero-title">Full-stack <em>software engineer.</em></h1>
+        <div className="intro-bottom">
+          <p className="intro-lede">I design and build web products, from the interface to the APIs behind it. I also build Python tools that automate repetitive work.</p>
+          <div className="intro-actions">
+            <a className="button" href="#work">Explore my work <FiArrowDown className="link-icon" aria-hidden="true" /></a>
+            <a className="text-link" href="/downloads/ogheneyole-gold-resume.pdf" download>Download résumé <FiDownload className="link-icon" aria-hidden="true" /></a>
           </div>
         </div>
       </div>
-    </div>
+      <HeroWorkbench />
+    </section>
   );
-};
-
-export default Hero;
+}

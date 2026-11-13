@@ -1,0 +1,92 @@
+.diaries-study { padding-bottom: clamp(2rem, 6vw, 5rem); }
+.diaries-back { margin-top: .85rem; color: var(--muted); }
+
+.diaries-hero {
+  display: grid;
+  grid-template-columns: minmax(0, .88fr) minmax(0, 1.12fr);
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding-block: clamp(1.5rem, 4.5vw, 4rem);
+}
+.diaries-hero .label { color: var(--accent); }
+.diaries-hero h1 {
+  max-width: 9ch;
+  margin-block: .2em .28em;
+  font: 500 clamp(3.6rem, 7.5vw, 7rem)/.92 var(--serif);
+  letter-spacing: -.05em; word-spacing: .07em;
+}
+.diaries-lede { max-width: 34ch; font-size: clamp(1.1rem, 2vw, 1.35rem); }
+.diaries-lede, .diaries-brief p, .diaries-section p, .diaries-decisions dd { color: var(--muted); line-height: 1.65; }
+.diaries-hero .button { margin-top: 1.25rem; }
+.diaries-home {
+  padding: clamp(.65rem, 2vw, 1.4rem);
+  background: #e8dfd2;
+  border: 1px solid #cabdac;
+  border-radius: .65rem;
+}
+.diaries-home img {
+  width: 100%;
+  height: auto;
+  border-radius: .3rem;
+  box-shadow: 0 .35rem 1rem #33241924;
+}
+
+.diaries-brief, .diaries-section {
+  border-top: 1px solid var(--rule);
+  padding-block: clamp(1.75rem, 4.5vw, 3.65rem);
+}
+.diaries-brief, .diaries-reader {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+.diaries-brief h2 {
+  margin-bottom: .5rem;
+  font: 600 1.6rem/1.2 var(--serif);
+  letter-spacing: -.035em;
+}
+.diaries-brief .tech-list { margin-top: .7rem; }
+.diaries-section h2 {
+  max-width: 22ch;
+  margin-bottom: .65rem;
+  font: 500 clamp(2.1rem, 4.7vw, 3.85rem)/1.06 var(--serif);
+  letter-spacing: -.055em;
+}
+.diaries-section p { max-width: 65ch; }
+.diaries-section .text-link { margin-top: .65rem; text-decoration: underline; }
+.diaries-reader { align-items: center; }
+.diaries-reader img { width: 100%; height: auto; }
+
+.diaries-flow {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+  list-style: decimal inside;
+}
+.diaries-flow li {
+  padding: 1rem;
+  border: 1px solid var(--rule);
+  background: color-mix(in srgb, var(--paper), var(--accent) 6%);
+}
+.diaries-flow li::marker { font-family: var(--mono); color: var(--accent); }
+.diaries-flow h3 { display: inline; font-weight: 700; }
+.diaries-flow p { margin-top: .5rem; }
+.diaries-decisions { margin-top: 1.2rem; }
+.diaries-decisions > div {
+  display: grid;
+  grid-template-columns: minmax(0, .55fr) minmax(0, 1fr);
+  gap: .4rem 2rem;
+  padding-block: 1rem;
+  border-top: 1px solid var(--rule);
+}
+.diaries-decisions dt { font-weight: 700; }
+.diaries-study .diaries-section:last-child { padding-bottom: 0; }
+
+@media (max-width: 46rem) {
+  .diaries-hero, .diaries-reader, .diaries-flow { grid-template-columns: 1fr; }
+  .diaries-hero h1 { max-width: none; }
+}
+@media (max-width: 32rem) {
+  .diaries-brief, .diaries-decisions > div { grid-template-columns: 1fr; }
+}

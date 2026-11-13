@@ -1,49 +1,49 @@
+import { useEffect, useRef, useState } from "react";
+import { FiArrowUpRight } from "react-icons/fi";
 import { EXPERIENCES } from "../constants";
-import { motion } from "framer-motion";
 
-const Experience = () => {
+export default function Experience() {
+  const timeline = useRef(null);
+  const [active, setActive] = useState(0);
+
+  useEffect(() => {
+    if (!("IntersectionObserver" in window)) return;
+    const milestones = Array.from(timeline.current.children);
+    const visible = new Set();
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(({target, isIntersecting}) => {
+        if (isIntersecting) visible.add(target);
+        else visible.delete(target);
+      });
+      const index = milestones.findIndex((milestone) => visible.has(milestone));
+      if (index !== -1) setActive(index);
+    }, { rootMargin: "-48% 0px -48% 0px" });
+    milestones.forEach((milestone) => observer.observe(milestone));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className="border-b border-neutral-900 pb-4">
-      <motion.h2 
-        whileInView={{ opacity: 1, y: 0 }}
-        initial={{ opacity: 0, y: -100 }}
-        transition={{ duration: 0.5 }}
-        className="my-20 text-center text-4xl">Experience
-      </motion.h2>
-      <div>
-        {EXPERIENCES.map((experience, index) => (
-            <div key={index} className="mb-8 flex flex-wrap lg:justify-center">
-                <motion.div 
-                  whileInView={{ opacity: 1, x: 0 }}
-                  initial={{ opacity: 0, x: -100 }}
-                  transition={{ duration: 1 }}
-                  className="w-full lg:w-1/4">
-                  <p className="mb-2 text-sm text-neutral-400">{experience.year}</p>
-                </motion.div>
-
-                <motion.div 
-                  whileInView={{ opacity: 1, x: 0 }}
-                  initial={{ opacity: 0, x: 100 }}
-                  transition={{ duration: 1 }}
-                  className="w-full max-w-xl lg:w-3/4">
-                  <h6 className="mb-2 font-semibold">
-                    {experience.role} -{" "}
-                    <span className="text-sm text-purple-100">
-                      {experience.company}
-                    </span>
-                  </h6>
-                  <p className="mb-4 text-neutral-400">{experience.description}</p>
-                  {experience.technologies.map((tech, index) => (
-                    <span key={index} className="mr-2 mt-4 rounded bg-neutral-900 px-2 py-1 text-sm font-medium text-purple-800">
-                      {tech}
-                    </span>
-                  ))}
-                </motion.div>
-            </div>
-        ))}  
+    <section className="career" id="experience" aria-labelledby="experience-title">
+      <div className="career-heading">
+        <h2 id="experience-title">Professional experience</h2>
+        <p>Building products independently and shipping software with teams since 2022.</p>
       </div>
-    </div>
+      <ol className="career-timeline" ref={timeline}>
+        {EXPERIENCES.map(({ company, role, year, url, details, technologies, work }, index) => (
+          <li className="career-milestone" key={company} data-active={index === active} data-passed={index < active}>
+            <div className="career-card">
+              <div className="career-card-heading">
+                <h3>{role}</h3>
+                <p className="career-date">{year}</p>
+              </div>
+              <p className="career-company">{url ? <a href={url}>{company}</a> : company}</p>
+              <ul className="career-details">{details.map((detail) => <li key={detail}>{detail}</li>)}</ul>
+              <ul className="career-tech" aria-label="Technologies">{technologies.map((tech) => <li key={tech}>{tech}</li>)}</ul>
+              {work && <a className="text-link career-proof" href={work.href}>{work.label} <FiArrowUpRight className="link-icon" aria-hidden="true" /></a>}
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
   );
-};
-
-export default Experience;
+}

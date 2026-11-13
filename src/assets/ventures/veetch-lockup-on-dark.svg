@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -8 365 80" role="img" aria-label="VEETCH wordmark">
+  <title>VEETCH wordmark</title>
+  <g transform="translate(-12 -17)">
+    <g fill="#18B77B">
+      <path d="M12 17H30L45 47V81L12 17Z" />
+    </g>
+    <g fill="#EAF6EF">
+      <path d="M84 17H66L51 47V81L84 17Z" />
+    </g>
+  </g>
+  <g fill="#EAF6EF" transform="translate(16 0)">
+    <g transform="translate(65 0)">
+      <path d="M0 0H44V10H11V26H39V36H11V54H44V64H0Z" />
+    </g>
+    <g transform="translate(119 0)">
+      <path d="M0 0H44V10H11V26H39V36H11V54H44V64H0Z" />
+    </g>
+    <g transform="translate(172 0)">
+      <path d="M0 0H50V10H31V64H19V10H0Z" />
+    </g>
+    <g transform="translate(228 0)">
+      <path d="M49 11L41 18C38 12 33 9 26 9C15 9 10 17 10 32C10 47 15 55 26 55C33 55 38 52 42 46L50 53C45 61 36 66 25 66C8 66 0 53 0 32C0 11 9 -2 26 -2C36 -2 45 3 49 11Z" />
+    </g>
+    <g transform="translate(287 0)">
+      <path d="M0 0H11V26H39V0H50V64H39V36H11V64H0Z" />
+    </g>
+  </g>
+</svg>

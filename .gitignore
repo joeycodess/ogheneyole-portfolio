@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Server credentials and local Vercel metadata
+.env
+.env.*
+!.env.example
+.vercel

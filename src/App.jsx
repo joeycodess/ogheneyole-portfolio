@@ -1,29 +1,29 @@
+import useInitialFragment from "./useInitialFragment";
 import Navbar from "./components/Navbar";
 import Hero from "./components/Hero";
 import About from "./components/About";
-import Technologies from "./components/Technologies";
+import Automation from "./components/Automation";
 import Experience from "./components/Experience";
+import Technologies from "./components/Technologies";
 import Projects from "./components/Projects";
 import Contacts from "./components/Contacts";
 
-const App = () => {
+export default function App() {
+  useInitialFragment();
+
   return (
-    <div className="overflow-x-hidden text-neutral-300 antialiased selection:bg-cyan-300 selection:text-cyan-900">
-      <div className="fixed top-0 -z-10 h-full w-full">
-        <div className="absolute top-0 z-[-2] h-screen w-screen bg-neutral-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]"></div>
-      </div>
-
-      <div className="container mx-auto px-8">
-        <Navbar />
+    <>
+      <a className="skip-link" href="#main">Skip to content</a>
+      <Navbar />
+      <main className="shell" id="main" tabIndex="-1">
         <Hero />
-        <About />
-        <Technologies />
-        <Experience />
         <Projects />
-        <Contacts />
-      </div>
-    </div>
+        <Experience />
+        <Automation />
+        <Technologies />
+        <About />
+      </main>
+      <Contacts />
+    </>
   );
-};
-
-export default App;
+}

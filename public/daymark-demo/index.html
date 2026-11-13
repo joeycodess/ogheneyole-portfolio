@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+  <meta name="description" content="Daymark is a personal planner for capturing tasks and planning your day.">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- iOS displays a device-sized PNG before the opening screen in the page can paint. -->
+  <title>Daymark — Personal Planner</title>
+  <link rel="icon" href="/daymark-demo/assets/favicon-DiLrQXEl.svg" type="image/svg+xml">
+  <style>#opening-screen{--opening-paper:#f6f7fc;--opening-ink:#18213b;--opening-accent:#354bd8;--opening-mark:#fff;z-index:10;background:var(--opening-paper);color:var(--opening-ink);text-align:center;place-items:center;padding:24px;font:400 15px/1.5 DM Sans,Avenir Next,sans-serif;display:grid;position:fixed;inset:0}#opening-screen[hidden],#opening-retry[hidden]{display:none}body:has(#opening-screen:not([hidden]))>:is(.sidebar,main,.skip-link){visibility:hidden}#opening-screen[data-theme=dark]{--opening-paper:#111522;--opening-ink:#eef1ff;--opening-accent:#a8b5ff;--opening-mark:#161c34}@media (prefers-color-scheme:dark){#opening-screen:not([data-theme]){--opening-paper:#111522;--opening-ink:#eef1ff;--opening-accent:#a8b5ff;--opening-mark:#161c34}}.opening-mark{background:var(--opening-accent);width:60px;height:60px;color:var(--opening-mark);border-radius:17px;place-items:center;margin:0 auto 16px;display:grid}.opening-name{letter-spacing:-.04em;font:750 34px/1 DM Sans,Avenir Next,sans-serif;display:block}#opening-status{margin:12px 0 0}.opening-indicator{border:2px solid color-mix(in srgb, var(--opening-accent) 22%, transparent);border-block-start-color:var(--opening-accent);border-radius:50%;width:22px;height:22px;margin:18px auto 0;display:block}#opening-screen:has(#opening-retry:not([hidden])) .opening-indicator{display:none}@media (prefers-reduced-motion:no-preference){.opening-indicator{animation:.8s linear infinite opening-spin}@keyframes opening-spin{to{transform:rotate(1turn)}}}#opening-retry{border:1px solid var(--opening-accent);margin-top:12px}</style>
+  <meta name="robots" content="noindex">
+  <style>#demo-tools{z-index:25;position:fixed;bottom:1rem;right:1rem}#demo-tools button{color:#18213b;cursor:pointer;background:#fff;border:1px solid #a7b4cc;border-radius:.65rem;min-height:44px;padding:.5rem .85rem;font:650 .9rem system-ui,sans-serif;box-shadow:0 3px 15px #19274425}#demo-tools button:focus-visible{outline-offset:2px;outline:2px solid #3649df}@media (width<=780px){#demo-tools{bottom:calc(5rem + env(safe-area-inset-bottom))}}</style>
+  <script type="module" crossorigin src="/daymark-demo/assets/index-CRouFAlW.js"></script>
+</head>
+<body>
+  <!-- Interface icons from Lucide 0.468.0. See lucide-license.txt. -->
+  <svg hidden aria-hidden="true">
+    <symbol id="icon-brand" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 1.5c1.7 6 4.5 8.8 10.5 10.5-6 1.7-8.8 4.5-10.5 10.5C10.3 16.5 7.5 13.7 1.5 12 7.5 10.3 10.3 7.5 12 1.5Z"/></symbol>
+    <symbol id="icon-list" viewBox="0 0 24 24"><path d="m3 17 2 2 4-4" /><path d="m3 7 2 2 4-4" /><path d="M13 6h8" /><path d="M13 12h8" /><path d="M13 18h8" /></symbol>
+    <symbol id="icon-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12" /><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" /></symbol>
+    <symbol id="icon-today" viewBox="0 0 24 24"><path d="M8 2v4" /><path d="M16 2v4" /><path d="M21 14V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" /><path d="M3 10h18" /><path d="m16 20 2 2 4-4" /></symbol>
+    <symbol id="icon-upcoming" viewBox="0 0 24 24"><path d="m14 18 4-4 4 4" /><path d="M16 2v4" /><path d="M18 22v-8" /><path d="M21 11.343V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h9" /><path d="M3 10h18" /><path d="M8 2v4" /></symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" /></symbol>
+    <symbol id="icon-folder-plus" viewBox="0 0 24 24"><path d="M12 10v6" /><path d="M9 13h6" /><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" /></symbol>
+    <symbol id="icon-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
+    <symbol id="icon-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5m0-8h.01"/></symbol>
+    <symbol id="icon-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5" /></symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24"><path d="M10.268 21a2 2 0 0 0 3.464 0" /><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" /></symbol>
+    <symbol id="icon-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></symbol>
+    <symbol id="icon-plus" viewBox="0 0 24 24"><path d="M5 12h14" /><path d="M12 5v14" /></symbol>
+    <symbol id="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2" /><path d="M12 20v2" /><path d="m4.93 4.93 1.41 1.41" /><path d="m17.66 17.66 1.41 1.41" /><path d="M2 12h2" /><path d="M20 12h2" /><path d="m6.34 17.66-1.41 1.41" /><path d="m19.07 4.93-1.41 1.41" /></symbol>
+    <symbol id="icon-moon" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" /></symbol>
+    <symbol id="icon-edit" viewBox="0 0 24 24"><path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" /><path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" /></symbol>
+    <symbol id="icon-trash" viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" /><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" /><line x1="10" x2="10" y1="11" y2="17" /><line x1="14" x2="14" y1="11" y2="17" /></symbol>
+    <symbol id="icon-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line x1="12" x2="12" y1="15" y2="3" /></symbol>
+    <symbol id="icon-upload" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" x2="12" y1="3" y2="15" /></symbol>
+    <symbol id="icon-undo" viewBox="0 0 24 24"><path d="M9 14 4 9l5-5" /><path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" /></symbol>
+    <symbol id="icon-archive" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1" /><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8" /><path d="M10 12h4" /></symbol>
+    <symbol id="icon-restore" viewBox="0 0 24 24"><rect width="20" height="5" x="2" y="3" rx="1" /><path d="M4 8v11a2 2 0 0 0 2 2h2" /><path d="M20 8v11a2 2 0 0 1-2 2h-2" /><path d="m9 15 3-3 3 3" /><path d="M12 12v9" /></symbol>
+    <symbol id="icon-close" viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></symbol>
+    <symbol id="icon-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" /><circle cx="12" cy="12" r="3" /></symbol>
+    <symbol id="icon-sliders" viewBox="0 0 24 24"><line x1="21" x2="14" y1="4" y2="4" /><line x1="10" x2="3" y1="4" y2="4" /><line x1="21" x2="12" y1="12" y2="12" /><line x1="8" x2="3" y1="12" y2="12" /><line x1="21" x2="16" y1="20" y2="20" /><line x1="12" x2="3" y1="20" y2="20" /><line x1="14" x2="14" y1="2" y2="6" /><line x1="8" x2="8" y1="10" y2="14" /><line x1="16" x2="16" y1="18" y2="22" /></symbol>
+    <symbol id="icon-flag" viewBox="0 0 24 24"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" /><line x1="4" x2="4" y1="22" y2="15" /></symbol>
+    <symbol id="icon-repeat" viewBox="0 0 24 24"><path d="m17 2 4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="m7 22-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></symbol>
+    <symbol id="icon-reorder" viewBox="0 0 24 24"><path d="m21 16-4 4-4-4" /><path d="M17 20V4" /><path d="m3 8 4-4 4 4" /><path d="M7 4v16" /></symbol>
+    <symbol id="icon-date" viewBox="0 0 24 24"><path d="M8 2v4" /><path d="M16 2v4" /><rect width="18" height="18" x="3" y="4" rx="2" /><path d="M3 10h18" /><path d="M8 14h.01" /><path d="M12 14h.01" /><path d="M16 14h.01" /><path d="M8 18h.01" /><path d="M12 18h.01" /><path d="M16 18h.01" /></symbol>
+    <symbol id="icon-reminder" viewBox="0 0 24 24"><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h3.5" /><path d="M16 2v4" /><path d="M8 2v4" /><path d="M3 10h5" /><path d="M17.5 17.5 16 16.3V14" /><circle cx="16" cy="16" r="6" /></symbol>
+    <symbol id="icon-time" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16.5 12" /></symbol>
+    <symbol id="icon-calendar-add" viewBox="0 0 24 24"><path d="M8 2v4" /><path d="M16 2v4" /><path d="M21 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8" /><path d="M3 10h18" /><path d="M16 19h6" /><path d="M19 16v6" /></symbol>
+  </svg>
+  <div id="opening-screen">
+    <div class="opening-content">
+      <span class="opening-mark" aria-hidden="true"><svg width="31" height="31" focusable="false"><use href="#icon-brand"/></svg></span>
+      <span class="opening-name">Daymark</span>
+      <p id="opening-status" role="status">Opening your planner…</p>
+      <span class="opening-indicator" aria-hidden="true"></span>
+      <button id="opening-retry" type="button" hidden>Reload Daymark</button>
+      <noscript>
+        <style>#opening-status,.opening-indicator{display:none}</style>
+        <p>Enable JavaScript to open Daymark.</p>
+      </noscript>
+    </div>
+  </div>
+  <script>
+    {
+      const opening = document.querySelector('#opening-screen');
+      const retry = document.querySelector('#opening-retry');
+      try {
+        const theme = localStorage.getItem('daymark-portfolio-demo-darkMode');
+        if (theme === 'true' || theme === 'false') opening.dataset.theme = theme === 'true' ? 'dark' : 'light';
+      } catch { /* Use the system theme if storage is unavailable. */ }
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        opening.dataset.paintedAt = performance.now();
+      }));
+      retry.addEventListener('click', () => location.reload());
+      setTimeout(() => {
+        if (opening.hidden) return;
+        document.querySelector('#opening-status').textContent = 'Daymark is taking longer than expected.';
+        retry.hidden = false;
+      }, 8000);
+    }
+  </script>
+  <a class="skip-link" href="#task-input">Skip to task capture</a>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><svg class="icon" focusable="false"><use href="#icon-brand"/></svg></span>
+        <span class="brand-text">
+          <span class="brand-name">Daymark</span>
+          <span class="brand-subtitle">Personal planner</span>
+        </span>
+      </div>
+    </div>
+    <nav aria-label="Planner views">
+      <p class="eyebrow">Planner</p>
+      <div class="view-links">
+        <button type="button" data-view="today"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-today"/></svg> <span>Today</span><span class="nav-count" id="today-count" aria-hidden="true"></span></button>
+        <button type="button" data-view="inbox"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-inbox"/></svg> <span>Inbox</span><span class="nav-count" id="inbox-count" aria-hidden="true"></span></button>
+        <button type="button" data-view="upcoming"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-upcoming"/></svg> Upcoming</button>
+        <button type="button" data-view="all"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-list"/></svg> All tasks</button>
+      </div>
+    </nav>
+    <section aria-labelledby="project-heading">
+      <div class="project-heading">
+        <h2 class="eyebrow" id="project-heading">Projects</h2>
+        <button type="button" id="toggle-projects" aria-controls="project-links" aria-expanded="false"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"/></svg> <span>Show projects</span></button>
+        <button type="button" id="new-project" aria-label="New project" title="New project"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-folder-plus"/></svg></button>
+      </div>
+      <div id="project-links">
+        <div id="active-project-links" class="view-links"></div>
+        <details id="archived-projects" hidden>
+          <summary><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-archive"/></svg> Archived projects</summary>
+          <div id="archived-project-links" class="view-links"></div>
+        </details>
+      </div>
+    </section>
+    <button id="open-settings" class="with-icon sidebar-settings" type="button" aria-label="Settings" aria-haspopup="dialog" title="Settings"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-settings"/></svg><span>Settings</span></button>
+  </aside>
+  <main>
+    <div class="workspace-bar">
+      <p id="offline-status" class="offline-status" role="status" hidden>Offline</p>
+      <div class="task-search" role="search" aria-label="Workspace tasks">
+        <label class="sr-only" for="task-search">Search tasks, notes, or projects</label>
+        <div class="search-controls">
+          <div class="search-field">
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-search"/></svg>
+            <input type="search" id="task-search" aria-keyshortcuts="Control+K Meta+K" name="task-search" placeholder="Search tasks" autocomplete="off" maxlength="200">
+          </div>
+          <button type="button" id="clear-search" hidden>Clear search</button>
+        </div>
+      </div>
+      <button id="focus-capture" class="with-icon toolbar-add" type="button" aria-label="Focus new task" aria-keyshortcuts="Alt+N" title="New task (Alt+N)"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-plus"/></svg><span>New task</span></button>
+    </div>
+    <div class="workspace">
+      <div class="worklist">
+        <header class="page-heading">
+          <time id="today-label"></time>
+          <div class="page-title-row">
+            <h1 id="view-title" tabindex="-1">Today</h1>
+            <a class="calendar-jump with-icon" href="#planner-calendar"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-date"/></svg> Calendar</a>
+            <button type="button" id="project-settings" class="with-icon" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-sliders"/></svg> Project settings</button>
+          </div>
+          <p id="view-description">Make a plan for today and keep deadlines in view.</p>
+        </header>
+        <form id="capture-form" class="capture">
+          <label class="sr-only" for="task-input">New task</label>
+          <div class="capture-line">
+            <input id="task-input" name="text" placeholder="Add a task…" maxlength="200" pattern=".*\S.*" required autocomplete="off" enterkeyhint="done">
+            <button id="add-task" class="primary with-icon" type="submit"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-plus"/></svg> <span>Add task</span></button>
+          </div>
+          <details class="capture-details">
+            <summary><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-sliders"/></svg> Task details <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"/></svg></summary>
+            <div class="fields">
+              <label><span class="field-label"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-folder"/></svg> Project</span><select name="project" data-project-picker></select></label>
+              <div class="date-field"><label for="capture-due-date"><span class="field-label"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-date"/></svg> Due date</span></label><span class="date-control"><input id="capture-due-date" data-confirm-date name="dueDate" type="date"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-date"/></svg></span></div>
+              <div class="date-field"><label for="capture-planned-date">Planned date</label><span class="date-control"><input id="capture-planned-date" data-confirm-date name="plannedDate" type="date"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-today"/></svg></span></div>
+              <label><span class="field-label"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-flag"/></svg> Priority</span><select name="priority"><option value="none">None</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+            </div>
+            <label class="notes-field">Notes <textarea name="notes" rows="3" maxlength="2000"></textarea></label>
+            <div class="date-field reminder-field"><label for="capture-remind-at">Remind me</label><span class="date-control"><input id="capture-remind-at" data-confirm-date type="datetime-local" name="remindAt" aria-describedby="capture-reminder-help"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-reminder"/></svg></span></div>
+            <p class="reminder-help" id="capture-reminder-help">Reminders appear while Daymark is open.</p>
+          </details>
+        </form>
+        <section class="reminder-panel" id="reminder-panel" aria-labelledby="reminder-heading" hidden>
+          <h2 id="reminder-heading"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-bell"/></svg> Task reminders</h2>
+          <ul id="reminder-list"></ul>
+          <button type="button" id="dismiss-reminders">Dismiss reminders</button>
+        </section>
+        <section class="task-panel" aria-labelledby="tasks-heading">
+          <div class="list-heading">
+            <div>
+              <h2 id="tasks-heading" tabindex="-1">Tasks</h2>
+              <p class="search-count" id="search-count" role="status"></p>
+            </div>
+            <div class="list-actions">
+              <button type="button" id="reorder-btn" aria-pressed="false" hidden class="with-icon"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-reorder"/></svg> Reorder</button>
+              <div class="filters" role="group" aria-label="Completion status">
+                <button type="button" data-filter="all" aria-pressed="true">All</button>
+                <button type="button" data-filter="active" aria-pressed="false">Open</button>
+                <button type="button" data-filter="completed" aria-pressed="false">Done</button>
+              </div>
+            </div>
+          </div>
+          <div id="task-results">
+            <ul id="task-list" class="task-list"></ul>
+            <div id="upcoming-agenda" hidden></div>
+            <section class="today-group" data-today-group="overdue" aria-labelledby="today-overdue-heading" hidden>
+              <h3 id="today-overdue-heading">Overdue <span class="group-count"></span></h3>
+              <ul class="task-list" aria-labelledby="today-overdue-heading"></ul>
+            </section>
+            <section class="today-group" data-today-group="due" aria-labelledby="today-due-heading" hidden>
+              <h3 id="today-due-heading">Due today <span class="group-count"></span></h3>
+              <ul class="task-list" aria-labelledby="today-due-heading"></ul>
+            </section>
+            <section class="today-group" data-today-group="planned" aria-labelledby="today-planned-heading" hidden>
+              <h3 id="today-planned-heading">Planned for today <span class="group-count"></span></h3>
+              <ul class="task-list" aria-labelledby="today-planned-heading"></ul>
+            </section>
+            <section class="today-group" data-today-group="missed" aria-labelledby="today-missed-heading" hidden>
+              <h3 id="today-missed-heading">Needs rescheduling <span class="group-count"></span></h3>
+              <ul class="task-list" aria-labelledby="today-missed-heading"></ul>
+            </section>
+            <section class="today-group" data-today-group="earlier" aria-labelledby="today-earlier-heading" hidden>
+              <h3 id="today-earlier-heading">Completed from earlier dates <span class="group-count"></span></h3>
+              <ul class="task-list" aria-labelledby="today-earlier-heading"></ul>
+            </section>
+          </div>
+          <div class="empty-state" id="empty-panel" hidden>
+            <span class="empty-icon" aria-hidden="true"><svg class="icon" focusable="false"><use href="#icon-list"/></svg></span>
+            <p class="empty-title" id="empty-title"></p>
+            <p id="empty-state"></p>
+          </div>
+          <p class="workspace-summary" id="stats-text"></p>
+        </section>
+      </div>
+      <aside class="day-overview" aria-label="Planning overview">
+        <section class="calendar-card" id="planner-calendar" aria-labelledby="calendar-card-heading">
+          <header class="overview-heading">
+            <h2 id="calendar-card-heading">Calendar</h2>
+            <button id="calendar-today" type="button" aria-label="Go to current date">Today</button>
+          </header>
+          <div class="calendar-navigation">
+            <button id="calendar-prev" class="icon-button" type="button" aria-label="Previous month"><svg class="icon calendar-prev-icon" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"/></svg></button>
+            <h3 id="calendar-month" aria-live="polite"></h3>
+            <button id="calendar-next" class="icon-button" type="button" aria-label="Next month"><svg class="icon calendar-next-icon" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"/></svg></button>
+          </div>
+          <table class="calendar-grid" aria-labelledby="calendar-month">
+            <thead><tr></tr></thead>
+            <tbody></tbody>
+          </table>
+          <div class="calendar-day-detail">
+            <h3 id="calendar-selected-date" aria-live="polite"></h3>
+            <p id="calendar-empty">No tasks planned or due.</p>
+            <ul id="calendar-day-tasks" aria-labelledby="calendar-selected-date"></ul>
+          </div>
+        </section>
+        <section class="progress-panel" aria-labelledby="progress-heading">
+          <header class="overview-heading">
+            <h2 id="progress-heading">Today’s plan</h2>
+            <p id="progress-label"></p>
+          </header>
+          <progress id="today-progress" aria-labelledby="progress-heading" value="0" max="1"></progress>
+          <p id="progress-detail"></p>
+        </section>
+      </aside>
+    </div>
+  </main>
+  <div class="feedback-dock" id="feedback-dock">
+    <p class="sr-only" id="status" role="status" aria-atomic="true"></p>
+    <div id="action-feedback" class="action-feedback" hidden>
+      <span class="feedback-mark" aria-hidden="true">
+        <svg class="icon" focusable="false"><use href="#icon-check"/></svg>
+        <svg class="icon" focusable="false"><use href="#icon-info"/></svg>
+      </span>
+      <div class="feedback-copy">
+        <p id="feedback-title"></p>
+        <p id="feedback-subject" hidden></p>
+        <p id="feedback-detail" hidden></p>
+        <button id="feedback-open" type="button" hidden>Open task</button>
+      </div>
+      <button id="feedback-dismiss" class="icon-button" type="button" aria-label="Dismiss feedback"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"/></svg></button>
+    </div>
+    <div class="undo-banner" id="undo-banner" hidden>
+      <span id="undo-message"></span>
+      <button id="undo-btn" class="with-icon" type="button"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-undo"/></svg> Undo</button>
+      <button id="dismiss-undo" class="icon-button" type="button" aria-label="Dismiss undo"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"/></svg></button>
+    </div>
+  </div>
+  <dialog id="settings-dialog" aria-labelledby="settings-heading">
+    <header class="settings-heading">
+      <div>
+        <h2 id="settings-heading">Settings</h2>
+      </div>
+      <button class="icon-button" type="button" aria-label="Close settings" data-close autofocus><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"/></svg></button>
+    </header>
+    <section class="settings-group" aria-labelledby="settings-app-heading">
+      <h3 id="settings-app-heading">App</h3>
+      <button id="dark-mode-toggle" class="with-icon settings-action settings-toggle" type="button" aria-pressed="false"><svg class="icon icon-sun" aria-hidden="true" focusable="false"><use href="#icon-sun"/></svg><svg class="icon icon-moon" aria-hidden="true" focusable="false"><use href="#icon-moon"/></svg> Dark mode</button>
+      <button id="device-reminders" class="with-icon settings-action settings-toggle" type="button" aria-pressed="false" aria-describedby="device-reminders-help" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-bell"/></svg> Device alerts while open</button>
+      <p class="settings-note" id="device-reminders-help" hidden>Device alerts require permission and an active Daymark session.</p>
+      <button id="closed-app-reminders" class="with-icon settings-action settings-toggle" type="button" aria-pressed="false" aria-describedby="closed-app-reminders-help" hidden><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-reminder"/></svg> Closed-app reminders</button>
+      <p class="settings-note" id="closed-app-reminders-help" role="status" hidden></p>
+    </section>
+    <section class="settings-group" aria-labelledby="settings-data-heading">
+      <h3 id="settings-data-heading">Workspace data</h3>
+      <p class="settings-note">Tasks and projects are saved in this browser or installed app. Use a backup to move them to another device or installation.</p>
+      <button id="export-btn" class="with-icon settings-action" type="button"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-download"/></svg> Export backup</button>
+      <button id="import-btn" class="with-icon settings-action" type="button"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-upload"/></svg> Import backup</button>
+      <input id="import-file" type="file" accept=".json,application/json" hidden>
+      <button id="clear-btn" class="with-icon settings-action" type="button"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-trash"/></svg> Clear all tasks</button>
+    </section>
+    <p id="settings-status" class="settings-note" role="status"></p>
+  </dialog>
+  <dialog id="edit-dialog" aria-labelledby="edit-heading">
+    <form id="edit-form">
+      <h2 id="edit-heading">Edit task</h2>
+      <label>Task<input name="text" maxlength="200" pattern=".*\S.*" required autofocus></label>
+      <div class="fields">
+        <label>Project<select name="project" data-project-picker></select></label>
+        <div class="date-field"><label for="edit-due-date">Due date</label><span class="date-control"><input id="edit-due-date" data-confirm-date name="dueDate" type="date"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-date"/></svg></span></div>
+        <div class="date-field"><label for="edit-planned-date">Planned date</label><span class="date-control"><input id="edit-planned-date" data-confirm-date name="plannedDate" type="date"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-today"/></svg></span></div>
+        <label>Priority<select name="priority"><option value="none">None</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option></select></label>
+      </div>
+      <label class="notes-field">Notes <textarea name="notes" rows="3" maxlength="2000"></textarea></label>
+      <div class="repeat-field">
+        <label for="edit-repeat">Repeat</label>
+        <select id="edit-repeat" name="repeat" aria-describedby="repeat-help">
+          <option value="none">Never</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+        </select>
+      </div>
+      <p class="reminder-help" id="repeat-help">The next task is created when you complete this one. Repeats follow the planned date, or the due date if no plan is set.</p>
+      <details class="capture-details checklist-editor">
+        <summary>Checklist <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-chevron-down"/></svg></summary>
+        <ul id="checklist-steps"></ul>
+        <div class="checklist-add">
+          <label class="sr-only" for="checklist-input">New checklist step</label>
+          <input id="checklist-input" maxlength="120" placeholder="Add a step…" enterkeyhint="done">
+          <button id="checklist-add" type="button">Add step</button>
+        </div>
+      </details>
+      <div class="date-field reminder-field"><label for="edit-remind-at">Remind me</label><span class="date-control"><input id="edit-remind-at" data-confirm-date type="datetime-local" name="remindAt" aria-describedby="edit-reminder-help"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-reminder"/></svg></span></div>
+      <p class="reminder-help" id="edit-reminder-help">Reminders appear while Daymark is open.</p>
+    </form>
+    <details id="task-calendar">
+      <summary><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-calendar-add"/></svg> Add to Calendar</summary>
+      <form id="calendar-form" aria-describedby="calendar-help">
+        <p class="reminder-help" id="calendar-help">Uses the saved task title and notes. Leave start time blank for an all-day event.</p>
+        <div class="calendar-fields">
+          <label>Date <span class="date-control"><input name="date" type="date" required><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-date"/></svg></span></label>
+          <label>Start time <span class="date-control"><input name="time" type="time"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-time"/></svg></span></label>
+          <label>Minutes <input name="duration" type="number" min="1" max="1440" value="30" required disabled></label>
+        </div>
+        <div class="calendar-actions">
+          <button type="submit" value="google">Google Calendar</button>
+          <button type="submit" value="ics">Apple Calendar / other calendars (.ics)</button>
+        </div>
+        <p id="calendar-status" class="reminder-help" role="status"></p>
+      </form>
+    </details>
+    <p class="save-error" role="alert" hidden></p>
+    <div class="dialog-actions"><button type="button" data-close>Cancel</button><button class="primary" type="submit" form="edit-form">Save task</button></div>
+  </dialog>
+  <dialog id="project-dialog" aria-labelledby="new-project-heading">
+    <form id="project-form">
+      <h2 id="new-project-heading">New project</h2>
+      <label>Project name<input name="project" maxlength="50" pattern=".*\S.*" required autofocus></label>
+      <p class="save-error" role="alert" hidden></p>
+      <p id="project-archive-note" class="project-archive-note" hidden></p>
+      <div class="project-management" id="project-management" hidden>
+        <button type="button" class="with-icon" id="archive-project"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-archive"/></svg> <span>Archive project</span></button>
+        <button type="button" class="with-icon" id="delete-project"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-trash"/></svg> Delete project</button>
+      </div>
+      <div class="dialog-actions project-dialog-actions">
+        <button type="button" data-close>Cancel</button>
+        <button class="primary" id="save-project" type="submit">Create project</button>
+      </div>
+    </form>
+  </dialog>
+  <dialog class="plan-dialog" id="plan-dialog" aria-labelledby="plan-heading" aria-describedby="plan-task-name">
+    <header class="settings-heading">
+      <h2 id="plan-heading">Plan task</h2>
+      <button class="icon-button" type="button" aria-label="Close planning" data-close><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"/></svg></button>
+    </header>
+    <p id="plan-task-name"></p>
+    <div class="plan-actions">
+      <button class="with-icon" type="button" data-plan="0" autofocus><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-today"/></svg> Plan for today</button>
+      <button class="with-icon" type="button" data-plan="1"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-upcoming"/></svg> Plan for tomorrow</button>
+      <button class="with-icon" type="button" data-plan="clear"><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-close"/></svg> Clear planned date</button>
+    </div>
+    <form id="plan-date-form" class="plan-date-form">
+      <label for="plan-date">Choose a date</label>
+      <div class="plan-date-controls">
+        <span class="date-control"><input id="plan-date" name="date" type="date" required><svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-date"/></svg></span>
+        <button class="primary" type="submit">Save date</button>
+      </div>
+    </form>
+    <p class="save-error" role="alert" hidden></p>
+  </dialog>
+  <dialog class="confirm-dialog" id="confirm-dialog" aria-labelledby="confirm-heading" aria-describedby="confirm-detail">
+    <form method="dialog">
+      <h2 id="confirm-heading"></h2>
+      <p id="confirm-detail"></p>
+      <div class="dialog-actions">
+        <button type="submit" value="cancel" autofocus>Cancel</button>
+        <button type="submit" id="confirm-action" value="confirm"></button>
+      </div>
+    </form>
+  </dialog>
+  <dialog id="date-dialog" aria-labelledby="date-heading" aria-describedby="date-help">
+    <form id="date-form">
+      <h2 id="date-heading">Set date</h2>
+      <p id="date-help">Choose a value, then tap Apply.</p>
+      <div class="date-control">
+        <input id="date-draft" type="date" aria-labelledby="date-heading">
+        <svg class="icon" aria-hidden="true" focusable="false"><use href="#icon-date"/></svg>
+      </div>
+      <div class="dialog-actions">
+        <button type="button" id="clear-date">Clear</button>
+        <button type="button" data-close>Cancel</button>
+        <button type="submit" class="primary">Apply</button>
+      </div>
+    </form>
+  </dialog>
+  <div id="demo-tools"><button type="button" id="reset-demo">Reset demo</button></div>
+</body>
+</html>
